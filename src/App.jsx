@@ -113,7 +113,7 @@ function BadgeCard({ emoji, title, winner, reason, noWinner, color, avatarUrl, o
 }
 
 
-const APP_VERSION = "v0.7.0";
+const APP_VERSION = "v0.7.1";
 
 const BADGE_DEFS = [
   { key: "memberOfWeek",      emoji: "🏆", title: "Weekly MVP",       color: "#C89200" },
@@ -516,16 +516,16 @@ function QuestionBubbleChart({ data, onSelectMember, selectedName }) {
     return <div className="bubble-empty">No question data for this session.</div>;
   }
 
-  const W = 680, H = 306;
-  const PAD = { top: 24, right: 24, bottom: 48, left: 54 };
-  const BUBBLE_EDGE_PAD = 42;
+  const W = 620, H = 420;
+  const PAD = { top: 20, right: 18, bottom: 62, left: 58 };
+  const BUBBLE_EDGE_PAD = 24;
   const plotW = W - PAD.left - PAD.right;
   const plotH = H - PAD.top - PAD.bottom;
   const bubblePlotW = Math.max(1, plotW - BUBBLE_EDGE_PAD * 2);
   const bubblePlotH = Math.max(1, plotH - BUBBLE_EDGE_PAD * 2);
 
-  const maxAsked    = Math.max(...data.map(d => d.asked), 4);
-  const maxReceived = Math.max(...data.map(d => d.received), 5);
+  const maxAsked    = Math.max(...data.map(d => d.asked), 0) + 1;
+  const maxReceived = Math.max(...data.map(d => d.received), 0) + 1;
   const maxQuality  = Math.max(...data.map(d => d.quality), 10);
   const minQuality  = Math.min(...data.map(d => d.quality), 0);
 
@@ -557,7 +557,7 @@ function QuestionBubbleChart({ data, onSelectMember, selectedName }) {
 
         {/* X ticks */}
         {xTicks.map(v => (
-          <text key={`xt${v}`} x={scaleGridX(v)} y={H - 6} textAnchor="middle"
+          <text key={`xt${v}`} x={scaleGridX(v)} y={H - 40} textAnchor="middle"
             style={{ fontSize: "11px", fill: "#69707B", fontFamily: "Nunito", fontWeight: 800 }}>{v}</text>
         ))}
         {/* Y ticks */}
@@ -567,13 +567,13 @@ function QuestionBubbleChart({ data, onSelectMember, selectedName }) {
         ))}
 
         {/* Axis labels */}
-        <text x={PAD.left + plotW} y={H - 2} textAnchor="end"
-          style={{ fontSize: "15px", fill: "#69707B", fontFamily: "Nunito", fontWeight: 900, letterSpacing: "0" }}>
+        <text x={PAD.left + plotW} y={H - 5} textAnchor="end"
+          style={{ fontSize: "16px", fill: "#4E5564", fontFamily: "Nunito", fontWeight: 400, letterSpacing: "0" }}>
           How many Questions asked?
         </text>
-        <text x={14} y={PAD.top + 4} textAnchor="end"
-          transform={`rotate(-90, 14, ${PAD.top + 4})`}
-          style={{ fontSize: "15px", fill: "#69707B", fontFamily: "Nunito", fontWeight: 900, letterSpacing: "0" }}>
+        <text x={17} y={PAD.top + 4} textAnchor="end"
+          transform={`rotate(-90, 17, ${PAD.top + 4})`}
+          style={{ fontSize: "16px", fill: "#4E5564", fontFamily: "Nunito", fontWeight: 400, letterSpacing: "0" }}>
           How many Questions received?
         </text>
 
@@ -617,7 +617,7 @@ function QuestionBubbleChart({ data, onSelectMember, selectedName }) {
       {hovered !== null && data[hovered] && (() => {
         const x = scaleX(data[hovered].asked);
         const y = scaleY(data[hovered].received);
-        const edge = 130;
+        const edge = 150;
         const placeRight = x < edge;
         const placeLeft = x > W - edge;
         const placeBelow = y < 112;
